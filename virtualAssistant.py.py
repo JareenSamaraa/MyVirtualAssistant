@@ -61,30 +61,33 @@ def take_command():
 
 def run_VA():
     command = take_command()
-    if command is None:
-        return
-    if ('time' in command):
-        talk(talk_time())
-    elif 'how to' in command:
-        how_to(command)
-    elif 'play' in command:
-        playing = command.replace('play', '')
-        talk('Playing ' + playing + ' for you now!')
-        pywhatkit.playonyt(playing)
-    elif 'tell me about' in command:
-        info = wikipedia.summary(command.replace('tell me about', ''), 2)
-        talk(info)
-    elif ('wh' in command):
-        if 'what\'s your' in command or 'what is your' in command:
-            talk('No personal questions please! Ha ha!')
+    try:
+        if command is None:
+            return
+        if ('time' in command):
+            talk(talk_time())
+        elif 'how to' in command:
+            how_to(command)
+        elif 'play' in command:
+            playing = command.replace('play', '')
+            talk('Playing ' + playing + ' for you now!')
+            pywhatkit.playonyt(playing)
+        elif 'tell me about' in command:
+            info = wikipedia.summary(command.replace('tell me about', ''), 2)
+            talk(info)
+        elif 'are you' in command or 'yourself' in command:
+            talk('Not like you!! Hu hu!')
+        elif ('wh' in command):
+            if 'what\'s your' in command or 'what is your' in command:
+                talk('No personal questions please! Ha ha!')
+            else:
+                talk(wikipedia.summary(command, 2))
+        elif 'joke' in command:
+            talk(pyjokes.get_joke(category='all'))
         else:
-            talk(wikipedia.summary(command, 2))
-    elif 'are you' in command:
-        talk('Not like you!! Hu hu!')
-    elif 'joke' in command:
-        talk(pyjokes.get_joke(category='all'))
-    else:
-        talk('sorry! either your English is weak, or my knowledge is too little to understand this!')
+            talk('sorry! either your English is weak, or my knowledge is too little to understand this!')
+    except:
+        talk('Sorry I am not able to answer this currently!')
 
 
 while True:
